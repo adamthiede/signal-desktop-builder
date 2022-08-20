@@ -15,9 +15,10 @@ secrets:
   - a46d1075-dfa2-41aa-a925-366a876f49e2
 tasks:
   - setup: |
-      mkdir -p /opt/pakrepo
-      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-      flatpak install --arch=aarch64 flathub org.electronjs.Electron2.BaseApp//21.08 org.freedesktop.Platform//21.08 org.freedesktop.Sdk//21.08 -y
+      sudo mkdir -p /opt/pakrepo
+      sudo chown build /opt/pakrepo
+      sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+      sudo flatpak install --arch=aarch64 flathub org.electronjs.Electron2.BaseApp//21.08 org.freedesktop.Platform//21.08 org.freedesktop.Sdk//21.08 -y
   - build: |
       cd signal-desktop-builder
       bash ./ci-build.sh
