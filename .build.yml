@@ -10,6 +10,9 @@ sources:
   - https://git.sr.ht/~elagost/signal-desktop-builder
 environment:
   VERSION: "5.55.0"
+artifacts:
+  - signal-desktop.deb
+  - signal-desktop_$VERSION.tar.xz
 secrets:
   - 07d27e19-a690-46d1-9f0a-4d391f5968b8
   - cf901621-0e8f-4c8f-bbfb-1aeb910570b2
