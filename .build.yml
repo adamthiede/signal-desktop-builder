@@ -1,34 +1,43 @@
 image: debian/stable
 packages:
+  - bash
   - rsync
   - podman
   - flatpak
+  - elfutils
+  - coreutils
+  - slirp4netns
+  - rootlesskit
+  - binfmt-support
+  - fuse-overlayfs
   - flatpak-builder
   - qemu-user-static
-  - rootlesskit
 sources:
   - https://git.sr.ht/~elagost/signal-desktop-builder
 environment:
-  VERSION: "5.55.0"
-artifacts:
-  - signal-desktop.deb
-  - signal-desktop_$VERSION.tar.xz
+  VERSION: "5.56.0"
 secrets:
   - 07d27e19-a690-46d1-9f0a-4d391f5968b8
-  - cf901621-0e8f-4c8f-bbfb-1aeb910570b2
-  - a46d1075-dfa2-41aa-a925-366a876f49e2
+  - 07e0c486-ee68-4149-a12e-fa082897aefc
+  - 09e35114-22ff-4920-af6a-093f59d18af3
 tasks:
-  - setup: |
+  - container-build: |
+      cd signal-desktop-builder
+      bash -x ci-build.sh
+      podman stop signal-desktop-$VERSION
+      cp ~/signal-desktop.deb .
+  - install-flatpak-deps: |
       sudo mkdir -p /opt/pakrepo
       sudo chown build /opt/pakrepo
       sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
       sudo flatpak install --noninteractive --arch=aarch64 flathub org.electronjs.Electron2.BaseApp//21.08 org.freedesktop.Platform//21.08 org.freedesktop.Sdk//21.08 -y
-  - build: |
+  - build-flatpak: |
       cd signal-desktop-builder
-      bash ./ci-build.sh
-      podman stop signal-desktop-$VERSION
-      cp ~/signal-desktop.deb .
       flatpak-builder --arch=aarch64 --gpg-sign=FBEF43DC8C6BE9A7 --repo=/opt/pakrepo --force-clean .builddir flatpak.yml
   - deploy: |
-      rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/testing_repo/
+      rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/ci_repo/
+triggers:
+  - action: email
+    condition: always
+    to: adamj@mailbox.org
 

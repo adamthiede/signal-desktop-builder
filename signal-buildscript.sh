@@ -23,7 +23,7 @@ yarn install --frozen-lockfile
 rm -rf ts/test-mock # also broken on arm64
 yarn generate
 yarn build:webpack
-#yarn test always fails on arm...
+rn test always fails on arm...
 yarn build:release --arm64 --linux --dir
 yarn build:release --arm64 --linux deb
 popd

@@ -1,10 +1,10 @@
 #FROM arm64v8/debian:bookworm
-FROM arm64v8/debian:bullseye
+FROM docker.io/arm64v8/debian:bullseye
 RUN apt -qq update
-RUN apt -qq upgrade -y
+#RUN apt -qq upgrade -y
 
 # DEPS
-RUN apt -qq install -y vim python3 gcc python2 g++ make build-essential git git-lfs libffi-dev libssl-dev libglib2.0-0 libnss3 libatk1.0-0 libatk-bridge2.0-0 libx11-xcb1 libgdk-pixbuf-2.0-0 libgtk-3-0 libdrm2 libgbm1 ruby ruby-dev curl wget clang llvm lld clang-tools generate-ninja ninja-build pkg-config tcl wget
+RUN apt -qq install -y python3 gcc python2 g++ make build-essential git git-lfs libffi-dev libssl-dev libglib2.0-0 libnss3 libatk1.0-0 libatk-bridge2.0-0 libx11-xcb1 libgdk-pixbuf-2.0-0 libgtk-3-0 libdrm2 libgbm1 ruby ruby-dev curl wget clang llvm lld clang-tools generate-ninja ninja-build pkg-config tcl wget
 RUN gem install fpm
 ENV USE_SYSTEM_FPM=true
 RUN mkdir -p /usr/include/aarch64-linux-gnu/
@@ -19,7 +19,7 @@ COPY signal-buildscript.sh /
 RUN chmod +x /signal-buildscript.sh
 
 # Clone signal
-RUN git clone https://github.com/signalapp/Signal-Desktop -b 5.55.x
+RUN git clone https://github.com/signalapp/Signal-Desktop -b 5.56.x
 COPY patches/0001-Remove-no-sandbox-patch.patch /
 COPY patches/0001-Minimize-gutter-on-small-screens.patch /
 COPY patches/0001-reinstall-cross-deps-on-non-darwin-platforms.patch /
@@ -39,5 +39,6 @@ RUN shasum -c /opt/node.sums
 RUN mkdir -p /opt/node
 RUN cd /opt/; tar xf node-${NODE_VERSION}-linux-arm64.tar.gz
 RUN mv /opt/node-${NODE_VERSION}-linux-arm64/* /opt/node/
-ENV PATH=/opt/node/bin:$PATH
+#ENV PATH=/opt/node/bin:$PATH
+ENV PATH=/Signal-Desktop/node_modules/.bin:/root/.cargo/bin:/opt/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
 RUN npm install --global yarn

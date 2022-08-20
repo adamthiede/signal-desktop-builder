@@ -1,9 +1,10 @@
 #!/bin/bash
+echo "###ci-build.sh###"
 shopt -s localvar_inherit
-podman build -t signal-desktop-image-$VERSION .
+podman build --jobs $(nproc) -t signal-desktop-image-$VERSION .
 podman create --name=signal-desktop-$VERSION -it localhost/signal-desktop-image-$VERSION bash
 podman start signal-desktop-$VERSION
-podman exec -it --env-file=env -w /Signal-Desktop signal-desktop-$VERSION bash -c "echo $PATH"
+##podman exec -it --env-file=env -w /Signal-Desktop signal-desktop-$VERSION bash -c "echo $PATH"
 podman exec -it --env-file=env signal-desktop-$VERSION bash -i -c /signal-buildscript.sh
 podman exec -it --env-file=env -w /Signal-Desktop signal-desktop-$VERSION yarn install --non-interactive
 podman exec -it --env-file=env -w /Signal-Desktop signal-desktop-$VERSION yarn install --frozen-lockfile --non-interactive

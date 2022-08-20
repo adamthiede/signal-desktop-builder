@@ -116,7 +116,7 @@ Flatpak based on [Flathub Sigal Desktop builds](https://github.com/flathub/org.s
 * 5.36.0
 * 5.38.0
 
-## gitlab-ci notes:
+## sourcehut builds notes:
 
 to publish a new release:
 
@@ -125,6 +125,6 @@ to publish a new release:
 - run `update-node 5.45.x` to set Dockefile to use upstream's specified nodejs version
     - for '5.45.1' or other versions, you use the same '5.45.x' argument.
 - update `org.signal.Signal.metainfo.xml` with the new version
-- edit `.gitlab-ci.yml` and set `variables.VERSION` to new version
-- push changes and gitlab ci should trigger a new build
+- edit `.builds.yml` and set `environment.VERSION` to new version
+- push changes and sourcehut builds should trigger a new build
 
