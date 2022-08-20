@@ -1,0 +1,29 @@
+image: debian/stable
+packages:
+  - rsync
+  - podman
+  - qemu-user-static
+  - flatpak
+  - flatpak-builder
+sources:
+  - https://git.sr.ht/~elagost/signal-desktop-builder
+environment:
+  VERSION: "5.55.0"
+secrets:
+  - 07d27e19-a690-46d1-9f0a-4d391f5968b8
+  - cf901621-0e8f-4c8f-bbfb-1aeb910570b2
+  - a46d1075-dfa2-41aa-a925-366a876f49e2
+tasks:
+  - setup: |
+      mkdir -p /opt/pakrepo
+      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+      flatpak install --arch=aarch64 flathub org.electronjs.Electron2.BaseApp//21.08 org.freedesktop.Platform//21.08 org.freedesktop.Sdk//21.08 -y
+  - build: |
+      cd signal-desktop-builder
+      bash ./ci-build.sh
+      podman stop signal-desktop-$VERSION
+      cp ~/signal-desktop.deb .
+      flatpak-builder --arch=aarch64 --gpg-sign=FBEF43DC8C6BE9A7 --repo=/opt/pakrepo --force-clean .builddir flatpak.yml
+  - deploy: |
+      rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/testing_repo/
+

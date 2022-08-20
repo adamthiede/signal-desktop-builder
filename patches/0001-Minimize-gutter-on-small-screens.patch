@@ -1,0 +1,24 @@
+From 8549ac8eb8e7076a1f8a4294c6b4a6379691a15d Mon Sep 17 00:00:00 2001
+From: name <email>
+Date: Sat, 13 Nov 2021 02:15:51 +0000
+Subject: [PATCH] Minimize width of left pane on open
+
+---
+ ts/state/selectors/items.ts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ts/state/selectors/items.ts b/ts/state/selectors/items.ts
+index 33bcaa35d..b52a75d7a 100644
+--- a/ts/state/selectors/items.ts
++++ b/ts/state/selectors/items.ts
+@@ -16,7 +16,7 @@ import type {
+ import { DEFAULT_CONVERSATION_COLOR } from '../../types/Colors';
+ import { getPreferredReactionEmoji as getPreferredReactionEmojiFromStoredValue } from '../../reactions/preferredReactionEmoji';
+ 
+-const DEFAULT_PREFERRED_LEFT_PANE_WIDTH = 320;
++const DEFAULT_PREFERRED_LEFT_PANE_WIDTH = 109;
+ 
+ export const getItems = (state: StateType): ItemsStateType => state.items;
+ 
+-- 
+2.33.0
