@@ -35,7 +35,7 @@ tasks:
       cd signal-desktop-builder
       flatpak-builder --arch=aarch64 --gpg-sign=FBEF43DC8C6BE9A7 --repo=/opt/pakrepo --force-clean .builddir flatpak.yml
   - deploy: |
-      rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/ci_repo/
+      rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo_signal_ci/
 triggers:
   - action: email
     condition: always
