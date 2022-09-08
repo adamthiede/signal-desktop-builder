@@ -8,10 +8,10 @@ Subject: [PATCH] reduce minimum dimensions to allow for mobile screens
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/app/main.ts b/app/main.ts
-index 217e206b7..797ff7c3f 100644
+index 737ce97e6..a4eff1d2c 100644
 --- a/app/main.ts
 +++ b/app/main.ts
-@@ -555,14 +555,14 @@ function handleCommonWindowEvents(
+@@ -550,14 +550,14 @@ function handleCommonWindowEvents(
    }
  }
  
