@@ -25,10 +25,9 @@ index 737ce97e6..a4eff1d2c 100644
 -const MIN_WIDTH = 712;
 -const MIN_HEIGHT = 550;
 +const MIN_WIDTH = 360;
-+const MIN_HEIGHT = 300;
++const MIN_HEIGHT = 280;
  const BOUNDS_BUFFER = 100;
  
  type BoundsType = {
 -- 
 2.35.1
-
