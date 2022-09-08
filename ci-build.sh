@@ -1,5 +1,6 @@
 #!/bin/bash
 echo "###ci-build.sh###"
+set -x
 shopt -s localvar_inherit
 podman build --jobs $(nproc) -t signal-desktop-image-$VERSION .
 podman create --name=signal-desktop-$VERSION -it localhost/signal-desktop-image-$VERSION bash
