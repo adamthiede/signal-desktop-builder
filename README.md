@@ -14,7 +14,7 @@ Signed releases are available at https://gitlab.com/undef1/signal-desktop-builde
 * [x] ringrtc builds (note: this is done on the host)
     * No longer necessary as Signal are building it themselves.
 * [x] flatpak
-* [ ] Wayland
+* [x] Wayland ( with `--use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@"` )
 
 ## Dependencies
 This system requires the following:
