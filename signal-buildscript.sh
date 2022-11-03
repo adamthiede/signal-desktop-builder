@@ -8,7 +8,7 @@ pushd /Signal-Desktop
 git-lfs install
 git config --global user.name name
 git config --global user.email name@example.com
-git am ../0001-Minimize-gutter-on-small-screens.patch
+#git am ../0001-Minimize-gutter-on-small-screens.patch # does not work anymore; no longer required
 git am ../0001-Remove-stories-icon.patch
 git am ../0001-reinstall-cross-deps-on-non-darwin-platforms.patch
 git am ../0001-reduce-minimum-dimensions-to-allow-for-mobile-screen.patch
