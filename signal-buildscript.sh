@@ -9,6 +9,7 @@ git-lfs install
 git config --global user.name name
 git config --global user.email name@example.com
 git am ../0001-Minimize-gutter-on-small-screens.patch
+git am ../0001-Remove-stories-icon.patch
 git am ../0001-reinstall-cross-deps-on-non-darwin-platforms.patch
 git am ../0001-reduce-minimum-dimensions-to-allow-for-mobile-screen.patch
 # The mock tests are broken on custom arm builds
