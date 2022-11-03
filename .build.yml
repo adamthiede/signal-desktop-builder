@@ -23,7 +23,8 @@ secrets:
 tasks:
   - container-build: |
       cd signal-desktop-builder
-      bash -x ci-build.sh
+      set -x
+      bash ci-build.sh
       podman stop signal-desktop-$VERSION
       cp ~/signal-desktop.deb .
   - install-flatpak-deps: |
