@@ -8,10 +8,8 @@ pushd /Signal-Desktop
 git-lfs install
 git config --global user.name name
 git config --global user.email name@example.com
-#git am ../0001-Minimize-gutter-on-small-screens.patch # does not work anymore; no longer required
 git am ../0001-Remove-stories-icon.patch
 git am ../0001-reinstall-cross-deps-on-non-darwin-platforms.patch
-git am ../0001-reduce-minimum-dimensions-to-allow-for-mobile-screen.patch
 # The mock tests are broken on custom arm builds
 sed -r '/mock/d' -i package.json
 # Drop "--no-sandbox" commit from build
@@ -24,7 +22,7 @@ yarn install --frozen-lockfile
 rm -rf ts/test-mock # also broken on arm64
 yarn generate
 yarn build:webpack
-rn test always fails on arm...
+#yarn test always fails on arm...
 yarn build:release --arm64 --linux --dir
 yarn build:release --arm64 --linux deb
 popd
