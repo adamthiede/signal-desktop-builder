@@ -1,0 +1,42 @@
+From 5ba5f1aedbff3b6aa259a91f1a130d5b41641690 Mon Sep 17 00:00:00 2001
+From: Undef <gitlab@undef.tools>
+Date: Sat, 10 Dec 2022 16:51:56 +1100
+Subject: [PATCH] Always return MIN_WIDTH from storage
+
+This allows mobile devices to correctly use Signal-Desktop.
+---
+ ts/components/LeftPane.stories.tsx | 2 +-
+ ts/util/leftPaneWidth.ts           | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/ts/components/LeftPane.stories.tsx b/ts/components/LeftPane.stories.tsx
+index ff3a37241..406a62dd7 100644
+--- a/ts/components/LeftPane.stories.tsx
++++ b/ts/components/LeftPane.stories.tsx
+@@ -124,7 +124,7 @@ const useProps = (overrideProps: Partial<PropsType> = {}): PropsType => {
+     createGroup: action('createGroup'),
+     getPreferredBadge: () => undefined,
+     i18n,
+-    preferredWidthFromStorage: 320,
++    preferredWidthFromStorage: 97,
+     regionCode: 'US',
+     challengeStatus: select(
+       'challengeStatus',
+diff --git a/ts/util/leftPaneWidth.ts b/ts/util/leftPaneWidth.ts
+index 587fce0c0..a1f1fac3e 100644
+--- a/ts/util/leftPaneWidth.ts
++++ b/ts/util/leftPaneWidth.ts
+@@ -20,9 +20,9 @@ export function getWidthFromPreferredWidth(
+ ): number {
+   const clampedWidth = clamp(preferredWidth, MIN_WIDTH, MAX_WIDTH);
+ 
++  return MIN_WIDTH;
+   if (requiresFullWidth || clampedWidth >= SNAP_WIDTH) {
+     return Math.max(clampedWidth, MIN_FULL_WIDTH);
+   }
+ 
+-  return MIN_WIDTH;
+ }
+-- 
+2.35.1
+
