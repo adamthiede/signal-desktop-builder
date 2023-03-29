@@ -4,6 +4,7 @@ on:
     branches:
       - master
       - main
+  workflow_dispatch:
 jobs:
   Run-npm-on-Ubuntu:
     name: deploy
