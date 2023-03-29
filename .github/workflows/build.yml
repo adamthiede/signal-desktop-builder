@@ -9,23 +9,26 @@ jobs:
     name: deploy
     runs-on: ubuntu-latest
     steps:
-      - name: install ssh key
+      - name: install secrets 
         shell: bash
         env:
           ID_RSA: ${{secrets.ID_RSA}}
           SSHCONFIG: ${{secrets.SSHCONFIG}}
+          GPG_KEY: ${{secrets.GPG_KEY}}
           VERSION: "6.10.0"
         run: |
+          sudo apt update
+          sudo apt install -qq gpg openssh
           mkdir -p ~/.ssh
           echo "$ID_RSA" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           echo "$SSHCONFIG" > ~/.ssh/config
+          echo "$GPG_KEY" | gpg --import
       - name: checkout code
         uses: actions/checkout@v3
       - name: install deps
         shell: bash
         run: |
-          sudo apt update
           sudo apt install -qq bash rsync podman flatpak elfutils coreutils slirp4netns rootlesskit binfmt-support fuse-overlayfs flatpak-builder qemu-user-static
       - name: build deb
         shell: bash
