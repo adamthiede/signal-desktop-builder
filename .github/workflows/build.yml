@@ -42,9 +42,11 @@ jobs:
           cp ~/signal-desktop.deb .
       - name: install flatpak deps
         shell: bash
+        env:
+          CI_USER: runner
         run: |
           sudo mkdir -p /opt/pakrepo
-          sudo chown build /opt/pakrepo
+          sudo chown "$CI_USER" /opt/pakrepo
           sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
           sudo flatpak install --noninteractive --arch=aarch64 flathub org.electronjs.Electron2.BaseApp//22.08 org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08 -y
       - name: build flatpak
