@@ -33,7 +33,7 @@ jobs:
       - name: build deb
         shell: bash
         env:
-          VERSION: "6.10.0"
+          VERSION: "6.12.0"
         run: |
           set -x
           echo "Version is: $VERSION"
