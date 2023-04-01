@@ -45,7 +45,7 @@ jobs:
           VERSION: "6.12.0"
         uses: actions/upload-artifact@v3
         with:
-          name: signal-desktop-arm64-$VERSION.deb
+          name: signal-desktop-arm64-${{ env.VERSION }}.deb
           path: signal-desktop.deb
       - name: install flatpak deps
         shell: bash
