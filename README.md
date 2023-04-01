@@ -9,6 +9,8 @@ This repository is a fork of [undef1/signal-desktop-builder](https://gitlab.com/
 
 For directions on installing the flatpak, seek [here](https://elagost.com/flatpak).
 
+[![build and deploy signal](https://github.com/adamthiede/signal-desktop-builder/actions/workflows/build.yml/badge.svg)](https://github.com/adamthiede/signal-desktop-builder/actions/workflows/build.yml)
+
 ## Installing via Deb
 
 The upstream repo provides .deb binaries [here](https://gitlab.com/undef1/signal-desktop-builder/-/packages) for some releases.
