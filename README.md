@@ -3,120 +3,93 @@ This project allows building Signal Desktop for Debian 11 on ARM64.
 It is currently a work in progress, with the goal of building a flatpak
 which provides Signal Desktop.
 
-Signed releases are available at https://gitlab.com/undef1/signal-desktop-builder/-/packages
+This repository is a fork of [undef1/signal-desktop-builder](https://gitlab.com/undef1/signal-desktop-builder)
 
-## Current Status:
-* [x] Signal Desktop building
-* [x] libsignal-client builds
-    * No longer needed, built for arm64 by Signal
-* [x] zkgroup builds
-    * No longer needed. Included in libsignal-client
-* [x] ringrtc builds (note: this is done on the host)
-    * No longer necessary as Signal are building it themselves.
-* [x] flatpak
-* [x] Wayland ( with `--use-gl=egl --enable-features=UseOzonePlatform --ozone-platform=wayland "$@"` )
+## Installing my Flatpak build
 
-## Dependencies
-This system requires the following:
-* Docker or Podman
-* qemu-user-static (Debian package)
+For directions on installing the flatpak, seek [here](https://elagost.com/flatpak).
 
-## Usage
-1. Build the docker container: `sudo docker build .`
-2. Shell into the docker container: `sudo docker run -it <image> bash`
-3. Run the build script: `bash /signal-buildscript.sh`
-	- or `sudo docker run -it <image> bash -i -c "bash /signal-buildscript.sh"` (`-i` for interactive gets the proper $PATH, but this might not work in all automation)
-4. Copy the output application from the container (from outside container): `sudo docker cp <container>:/Signal-Desktop/release/<output folder> .`
-5. Copy to your Debian Arm64 device.
+## Installing via Deb
 
-### Note about Docker
-Docker has a concept of "images" and "containers". `docker build` will build an image, `docker run` will create a live container from that image.
-The final line of the `docker build` output is the docker "image" hash that you need for `docker run`. The "container" hash will be displayed on the commandline of the container at runtime.
-This "container" hash is the one which should be used with `docker cp`.
+The upstream repo provides .deb binaries [here](https://gitlab.com/undef1/signal-desktop-builder/-/packages) for some releases.
 
-## Note about packages:
-Installing packages from untrusted sources is a risk. In the case of Debian packages, 
-this is giving root access to your device to the package. In flatpaks, (sandbox escapes aside)
-the worst case is likely compromise of your Signal keys/messages.
+## Building Signal
 
-Please only install packages from sources you trust and if in doubt, build from source.
-Please also note that I do not verify the upstream debian package generation scripts.
+The process works through CI fairly well. I've included all the files in this repository for each of the CI platforms I've made it work on.
 
-## Debian Package
-Debian packages are also automatically built by the build script. They are available in the container at `/Signal-Desktop/release/`.
+- `.build.yml` will work for [sourcehut builds](https://builds.sr.ht).
+- `.gitlab-ci.yml` is obviously for [gitlab](https://gitlab.com) ci but is kind of incomplete, since I ran it on a self-hosted runner.
+- `.github/workflows/build.yml` is for [github](https://github.com) actions.
 
-Debian packages are also available in this repository's packages section.
+To build by hand, you will need an Ubuntu or Debian server.
 
-## Flatpak
+### Installing dependencies
 
-To create and install the flatpak:
+This needs to be done every time on CI, but only once on a self-hosted system. You can use docker instead of podman but will need to modify the scripts or set aliases yourself.
 
- - Install `git`, `flatpak`, and `flatpak-builder` from your OS:
-    - Mobian/Debian: `sudo apt install flatpak flatpak-builder`
-    - Arch/Manjaro: `sudo pacman -Syu flatpak flatpak-builder`
-    - PostmarketOS: `sudo apk add flatpak flatpak-builder`
- - `git clone https://gitlab.com/undef1/signal-desktop-builder && cd signal-desktop-builder`
- - `sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo`
- - `sudo flatpak install flathub org.electronjs.Electron2.BaseApp/aarch64/21.08 org.freedesktop.Platform/aarch64/21.08 org.freedesktop.Sdk/aarch64/21.08`
- - `mkdir builddir`
- - `flatpak-builder --user --install --force-clean ./builddir flatpak.yml`
+```
+sudo apt install -qq bash rsync podman flatpak elfutils coreutils slirp4netns rootlesskit binfmt-support fuse-overlayfs flatpak-builder qemu-user-static
+sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+sudo flatpak install --noninteractive --arch=aarch64 flathub org.electronjs.Electron2.BaseApp//22.08 org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08 -y
+```
 
-To enable Signal to use a dark theme on GTK-based desktop environments: `sudo flatpak install adwaita-dark -y`
+### Running Build Scripts
 
-Signal desktop icon should appear in your desktop launcher.
+Fairly simple. `ci-build.sh` invokes `signal-buildscript.sh`, builds signal in an ARM docker container and copies the .deb out. It looks like there's some duplication of work between them; for historical reasons this was necessary because one of them would fail due to non-interactivity. I think if you run it by hand in tmux or something, you can comment out most of `ci-build.sh`.
 
-Flatpak builds are available as a Flatpak Repository at https://elagost.com/flatpak built and hosted by @elagost.
+First, though, run `./update-node.sh 6.12.x` where `6.12.x` is the name of the branch you are building. If you get a new nodejs version, update the Dockerfile's `ENV NODE_VERSION` line.
 
-## Launcher
-The included `signal` shell script provides both a launcher and sandboxing with Bubblewrap.
+```
+export VERSION="6.12.0"
+bash ci-build.sh
+podman stop signal-desktop-$VERSION
+cp ~/signal-desktop.deb .
+```
+This build takes 2-3 hours.
 
-## RingRTC
-As of Signal-Desktop 5.35.0, RingRTC is being built and distributed for arm64 Linux by Signal. These steps are no-longer necessary.
+If you just want the .deb, you now have it. Congrats.
 
-## Better-sqlite3
-As of 5.48.0 we are using a newer version of better-sqlite3 than upstream Signal to work around an issue.
-This works fine and we will be dropping all better-sqlite3 code as soon as upstream updates.
+## Building a Flatpak
 
-## Updates
-I recommend that you back up `~/.config/Signal` before updating. While the releases here are tested, I have had a few of them corrupt this folder in the past. If the update fails for any reason, you will need the original database to roll back.
+Flatpak repos are just flat directories and a .flatpakrepo file.
 
-## Distribution Support
-This build system targets Mobian Bookworm. However, builds for Debian Bullseye based distributions (PureOS Byzantium) can be created by changing the Docker file to start with `FROM arm64v8/debian:bullseye`. 
+You'll need a GPG key - if it's password protected you'll get asked for the password when building so you can't do that to a key you use in CI. To make one use `gpg --gen-key`. You don't have to give it your "real" info.
 
-Such builds will be uploaded to the packages section from time to time as `<version>_bullseye`. These builds will not work on Mobian Bookworm and vice-versa.
+The flatpakrepo file looks like this:
 
-These Bullseye builds are untested, but should work.
+```
+[Flatpak Repo]
+Title=Signal-Arm Flatpak Repo
+Url=https://example.com/flatpak/signal-arm-repo/
+GPGKey=<Key Data>
+```
 
-## See also:
-https://github.com/lsfxz/ringrtc/tree/aarch64  
-https://gitlab.com/undef1/Snippets/-/snippets/2100495  
-https://gitlab.com/ohfp/pinebookpro-things/-/tree/master/signal-desktop  
-Flatpak based on [Flathub Sigal Desktop builds](https://github.com/flathub/org.signal.Signal/)
- - `signal-desktop.sh` https://github.com/flathub/org.signal.Signal/blob/master/signal-desktop.sh
- - `org.signal.Signal.metainfo.xml` https://github.com/flathub/org.signal.Signal/blob/master/org.signal.Signal.metainfo.xml
- - `flatpak.yml` https://github.com/flathub/org.signal.Signal/blob/master/org.signal.Signal.yaml
+To get the key data, run `gpg --armor --export <key email or ID> > key.gpg`. 
 
-## Successful builds:
-* 5.0.0-beta1
-* 5.1.0-beta.5
-* 5.5.0-beta.1 - Note: wayland currently broken on this release
-* 5.8.0-beta.1
-* 5.10.0-beta.1
-* 5.14-beta.1
-* 5.17-beta.1
-* 5.21.0-beta.2 - Note: registration broken, use 5.17 then upgrade
-* 5.24.0-beta.1
-* 5.28.0-beta.1
-* 5.30.0-beta.1
-* 5.30.0
-* 5.31.0 - Note: sidebar may reset. This can be fixed with a mouse. Calls broken
-* 5.32.0
-* 5.34.0
-* 5.34.0
-* 5.36.0
-* 5.38.0
+Before you send that key anywhere, inspect `key.gpg` and make sure it begins and ends with `PGP PUBLIC KEY BLOCK` and __NOT__ `PGP PRIVATE KEY BLOCK`. Your private key should be kept private.
 
-## sourcehut builds notes:
+If you've made sure it's a public key, run `base64 --wrap=0 < key.gpg`. This is the key you put in `<Key Data>`.
+
+For more info see [Flatpak.org's documentation on hosting a repo](https://docs.flatpak.org/en/latest/hosting-a-repository.html).
+
+Get the Key ID of your secret key. You can get it in the GNOME application "Passwords and Keys" (or `seahorse`), or `gpg --list-keys --keyid-format long`.
+
+Look for this line and that's the ID you supply to flatpak-builder.
+
+```
+pub   rsa4096/FBEF43DC8C6BE9A7 2022-06-04 [SC]
+             |-- ^ this ID ---|
+```
+
+Build the flatpak:
+
+```
+flatpak-builder --arch=aarch64 --gpg-sign=<Key ID> --repo=./repodir --force-clean ./builddir flatpak.yml
+```
+
+Now you have your `.flatpakrepo` file and your `./repodir`. You can put those on a web server and tell people about them, or use them yourself.
+
+## Github Actions notes:
 
 to publish a new release:
 
@@ -128,3 +101,11 @@ to publish a new release:
 - edit `.builds.yml` and set `environment.VERSION` to new version
 - push changes and sourcehut builds should trigger a new build
 
+## See also:
+https://github.com/lsfxz/ringrtc/tree/aarch64  
+https://gitlab.com/undef1/Snippets/-/snippets/2100495  
+https://gitlab.com/ohfp/pinebookpro-things/-/tree/master/signal-desktop  
+Flatpak based on [Flathub Sigal Desktop builds](https://github.com/flathub/org.signal.Signal/)
+ - `signal-desktop.sh` https://github.com/flathub/org.signal.Signal/blob/master/signal-desktop.sh
+ - `org.signal.Signal.metainfo.xml` https://github.com/flathub/org.signal.Signal/blob/master/org.signal.Signal.metainfo.xml
+ - `flatpak.yml` https://github.com/flathub/org.signal.Signal/blob/master/org.signal.Signal.yaml

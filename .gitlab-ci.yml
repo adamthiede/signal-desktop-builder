@@ -1,0 +1,43 @@
+# See https://docs.gitlab.com/ee/ci/yaml/index.html for all available options
+
+# This script does not include any secrets and was run on a self-hosted runner.
+# You will need a GPG key, SSH key, and SSH config. These are specified in the
+# other CI build files.
+
+variables:
+  VERSION: "5.56.0"
+
+before_script:
+  - shopt -s expand_aliases
+  - shopt -s localvar_inherit
+  - doas apt install podman qemu-user-static flatpak flatpak-builder rsync -y
+  - doas flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  - doas flatpak install --arch=aarch64 flathub org.electronjs.Electron2.BaseApp//21.08 org.freedesktop.Platform//21.08 org.freedesktop.Sdk//21.08 -y
+    #- doas flatpak update -y
+
+after_script:
+  - podman stop signal-desktop-$VERSION
+    #- podman container rm signal-desktop-$VERSION
+    #- podman image rm signal-desktop-image-$VERSION
+  - yes y | podman image prune
+
+build:
+  stage: build
+  tags:
+    - vps
+  script:
+    - bash -c ./ci-build.sh
+    - cp ~/signal-desktop.deb .
+    - flatpak-builder --arch=aarch64 --gpg-sign=FBEF43DC8C6BE9A7 --repo=/opt/pakrepo --force-clean .builddir flatpak.yml
+  artifacts:
+    when: always
+    paths:
+      - signal-desktop.deb
+      - signal-desktop_$VERSION.tar.xz
+
+deploy:
+  stage: deploy
+  tags:
+    - vps
+  script:
+    - rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/testing_repo/
