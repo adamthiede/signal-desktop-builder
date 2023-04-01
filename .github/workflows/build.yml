@@ -56,4 +56,4 @@ jobs:
       - name: sync to server
         shell: bash
         run: |
-          rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo_signal_ci/
+          rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo/
