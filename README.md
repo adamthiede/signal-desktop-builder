@@ -13,7 +13,8 @@ For directions on installing the flatpak, seek [here](https://elagost.com/flatpa
 
 ## Installing via Deb
 
-The upstream repo provides .deb binaries [here](https://gitlab.com/undef1/signal-desktop-builder/-/packages) for some releases.
+- The upstream repo provides .deb binaries [here](https://gitlab.com/undef1/signal-desktop-builder/-/packages) for some releases.
+- This repo provides .deb binaries as a CI artifacts; go to [actions](https://github.com/adamthiede/signal-desktop-builder/actions) and there should be a .deb attached to the latest run.
 
 ## Building Signal
 
