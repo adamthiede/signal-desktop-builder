@@ -27,5 +27,11 @@ sed -e "s,VERSION: .*$,VERSION: \"$version\"," -i .gitlab-ci.yml
 dt=$(date --iso-8601)
 sed -e "s,<release version.*,<release version=\"${latest_ver:1}\" date=\"$dt\"/>," -i org.signal.Signal.metainfo.xml
 
-git status | grep "nothing to commit, working tree clean" || git commit -am "Autobuild for $branch" && git push
+commit(){
+	git commit -am "Autobuild for $branch"
+	git tag $version
+	git push
+	git push origin $version
+}
+git status | grep "nothing to commit, working tree clean" || commit
 
