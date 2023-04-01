@@ -19,9 +19,9 @@ The upstream repo provides .deb binaries [here](https://gitlab.com/undef1/signal
 
 The process works through CI fairly well. I've included all the files in this repository for each of the CI platforms I've made it work on.
 
-- `.build.yml` will work for [sourcehut builds](https://builds.sr.ht).
-- `.gitlab-ci.yml` is obviously for [gitlab](https://gitlab.com) ci but is kind of incomplete, since I ran it on a self-hosted runner.
-- `.github/workflows/build.yml` is for [github](https://github.com) actions.
+- `.build.yml` will work for [sourcehut builds](https://builds.sr.ht). The 3 secrets are a GPG key, SSH key, and SSH config. Sourcehut helpfully lets you specify secrets of this type and will put them in the appropriate places on your builder.
+- `.github/workflows/build.yml` is for [github](https://github.com) actions. You will need the secrets I specified by name in the build manifest.
+- `.gitlab-ci.yml` is obviously for [gitlab](https://gitlab.com) ci but is kind of incomplete, since I ran it on a self-hosted runner. This one you'll need to figure out yourself.
 
 To build by hand, you will need an Ubuntu or Debian server.
 
@@ -100,8 +100,10 @@ to publish a new release:
 - run `update-node 5.45.x` to set Dockefile to use upstream's specified nodejs version
     - for '5.45.1' or other versions, you use the same '5.45.x' argument.
 - update `org.signal.Signal.metainfo.xml` with the new version
-- edit `.builds.yml` and set `environment.VERSION` to new version
-- push changes and sourcehut builds should trigger a new build
+- edit the build yml file (depending on which CI you're using) and set `VERSION` to new version
+- push changes; this should trigger a new build
+
+I also have create an `autobuild.sh` script to do all of this for you!
 
 ## See also:
 https://github.com/lsfxz/ringrtc/tree/aarch64  
