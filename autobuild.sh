@@ -35,7 +35,7 @@ dt=$(date --iso-8601)
 sed -e "s,<release version.*,<release version=\"${latest_ver:1}\" date=\"$dt\"/>," -i org.signal.Signal.metainfo.xml
 
 commit(){
-	git commit -am "Autobuild for $branch"
+	git commit -am "Autobuild for $version,branch $branch"
 	git tag $version
 	git push
 	git push origin $version
