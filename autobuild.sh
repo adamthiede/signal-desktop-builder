@@ -14,6 +14,15 @@ if [[ "$1" == "beta" ]];then
 	latest_ver=$(curl -s https://api.github.com/repos/signalapp/signal-desktop/releases|jq -r '.[] | .name'|head -n1)
 fi
 
+# determine if a build needs to be done at all
+if [[ "$latest_ver" == "$(cat autobuild.version)" ]];then
+	echo "Nothing to do."
+	exit 0
+else
+	echo $latest_ver > autobuild.version
+fi
+
+
 # make it an array, starting after the 'v'
 version="${latest_ver:1}"
 readarray -d . -t vers <<< ${version}
