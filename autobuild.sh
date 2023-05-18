@@ -40,7 +40,7 @@ sed -e "s,RUN git clone https://github.com/signalapp/Signal-Desktop.*$,RUN git c
 sed -e "s,VERSION: .*$,VERSION: \"$version\"," -i .github/workflows/build.yml
 sed -e "s,VERSION: .*$,VERSION: \"$version\"," -i .build.yml
 sed -e "s,VERSION: .*$,VERSION: \"$version\"," -i .gitlab-ci.yml
-dt=$(date --iso-8601)
+dt=$(date +%Y-%m-%d)
 sed -e "s,<release version.*,<release version=\"${latest_ver:1}\" date=\"$dt\"/>," -i org.signal.Signal.metainfo.xml
 
 commit(){
