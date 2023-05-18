@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # An attempt at a cron job to auto build this thing
 deps(){
 	dep_packages="jq curl"
