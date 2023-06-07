@@ -33,7 +33,7 @@ jobs:
       - name: build deb
         shell: bash
         env:
-          VERSION: "6.20.0"
+          VERSION: "6.20.1"
         run: |
           set -x
           echo "Version is: $VERSION"
@@ -42,7 +42,7 @@ jobs:
           cp ~/signal-desktop.deb .
       - name: upload .deb as build artifact 
         env:
-          VERSION: "6.20.0"
+          VERSION: "6.20.1"
         uses: actions/upload-artifact@v3
         with:
           name: signal-desktop-arm64-${{ env.VERSION }}.deb
