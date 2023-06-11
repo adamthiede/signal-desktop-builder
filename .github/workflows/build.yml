@@ -65,4 +65,11 @@ jobs:
         shell: bash
         run: |
           rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo/
+      - name: clean up images for self-hosted runner
+        env:
+          VERSION: "6.20.2"
+        shell: bash
+        run: |
+          podman container rm signal-desktop-${{ env.VERSION }}
+          podman image rm localhost/signal-desktop-image-${{ env.VERSION }}:latest
 
