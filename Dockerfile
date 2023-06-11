@@ -1,5 +1,5 @@
 #FROM arm64v8/debian:bookworm
-FROM docker.io/arm64v8/debian:bullseye
+FROM docker.io/arm64v8/debian:bookworm
 RUN apt -qq update
 #RUN apt -qq upgrade -y
 
