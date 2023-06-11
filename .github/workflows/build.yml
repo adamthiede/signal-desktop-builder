@@ -19,7 +19,7 @@ jobs:
           GPG_KEY: ${{secrets.GPG_KEY}}
         run: |
           sudo apt update
-          sudo apt install -qq gpg openssh-client
+          sudo apt install -qq -y gpg openssh-client
           mkdir -p ~/.ssh
           echo "$ID_RSA" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
@@ -30,7 +30,7 @@ jobs:
       - name: install deps
         shell: bash
         run: |
-          sudo apt install -qq bash rsync podman flatpak elfutils coreutils slirp4netns rootlesskit binfmt-support fuse-overlayfs flatpak-builder qemu-user-static
+          sudo apt install -qq -y bash rsync podman flatpak elfutils coreutils slirp4netns rootlesskit binfmt-support fuse-overlayfs flatpak-builder qemu-user-static
       - name: build deb
         shell: bash
         env:
