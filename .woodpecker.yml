@@ -1,20 +1,17 @@
 steps:
   build:
     image: debian:12
-    secrets: [testval, buildergpgkey, sshconfig, sshkey]
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+    secrets: [ gpgkey, sshconfig, sshkey]
     commands:
       - id
-      - echo "$${TESTVAL}"
-      - apk add git gpg gnupg openssh coreutils bash
+      - apt install -qq git gpg gnupg openssh coreutils bash
       - mkdir -p ~/.ssh
       - echo "$${SSHKEY}" > ~/.ssh/id_rsa
       - chmod 600 ~/.ssh/id_rsa
       - echo "$${SSHCONFIG}" > ~/.ssh/config
-      - echo -n "$${BUILDERGPGKEY}" | gpg --import
+      - echo -n "$${GPGKEY}" | gpg --import
       - echo "Secrets imported."
-      - apt install -qq bash rsync podman flatpak elfutils coreutils slirp4netns rootlesskit binfmt-support fuse-overlayfs flatpak-builder qemu-user-static
+      - apt install -qq rsync podman flatpak elfutils coreutils slirp4netns rootlesskit binfmt-support fuse-overlayfs flatpak-builder qemu-user-static
       - bash ci-build.sh
       - podman stop signal-desktop-$VERSION
       - cp ~/signal-desktop.deb .
