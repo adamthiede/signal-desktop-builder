@@ -7,8 +7,9 @@ on:
   workflow_dispatch:
 jobs:
   build-and-deploy-signal:
+    runs-on: self-hosted
+    #runs-on: ubuntu-latest
     name: build and deploy signal
-    runs-on: ubuntu-latest
     steps:
       - name: install secrets 
         shell: bash
