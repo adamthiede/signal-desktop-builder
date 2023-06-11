@@ -1,10 +1,10 @@
 steps:
   build:
-    image: debian:12
+    image: debian:bookworm
     secrets: [ gpgkey, sshconfig, sshkey]
     commands:
-      - id
-      - apt install -qq git gpg gnupg openssh coreutils bash
+      - apt update
+      - apt install -qq git gpg openssh coreutils bash
       - mkdir -p ~/.ssh
       - echo "$${SSHKEY}" > ~/.ssh/id_rsa
       - chmod 600 ~/.ssh/id_rsa
