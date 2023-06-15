@@ -34,7 +34,7 @@ jobs:
       - name: build deb
         shell: bash
         env:
-          VERSION: "6.20.2"
+          VERSION: ""
         run: |
           set -x
           echo "Version is: $VERSION"
@@ -43,7 +43,7 @@ jobs:
           cp ~/signal-desktop.deb .
       - name: upload .deb as build artifact 
         env:
-          VERSION: "6.20.2"
+          VERSION: ""
         uses: actions/upload-artifact@v3
         with:
           name: signal-desktop-arm64-${{ env.VERSION }}.deb
@@ -67,7 +67,7 @@ jobs:
           rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo/
       - name: clean up images for self-hosted runner
         env:
-          VERSION: "6.20.2"
+          VERSION: ""
         shell: bash
         run: |
           podman container rm signal-desktop-${{ env.VERSION }}

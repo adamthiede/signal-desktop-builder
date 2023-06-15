@@ -35,7 +35,7 @@ RUN git clone https://github.com/signalapp/better-sqlite3.git || true
 # NODE
 # Goes last because docker build can't cache the tar.
 # https://nodejs.org/dist/v14.15.5/
-ENV NODE_VERSION=v18.14.0
+ENV NODE_VERSION=v
 RUN wget -q https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-arm64.tar.gz -O /opt/node-${NODE_VERSION}-linux-arm64.tar.gz
 COPY node.sums /opt/
 RUN shasum -c /opt/node.sums
