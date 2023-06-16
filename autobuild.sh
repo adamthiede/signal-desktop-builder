@@ -7,11 +7,11 @@ deps(){
 
 
 # get latest non-beta release version from github API
-latest_ver=$(curl -s https://api.github.com/repos/signalapp/signal-desktop/releases|jq -r '.[] | select(.prerelease|not) | .name'|head -n1)
+latest_ver=$(curl -s https://api.github.com/repos/signalapp/signal-desktop/releases|jq -r '.[] | select(.prerelease|not) | .tag_name'|head -n1)
 
 # if run with "./autobuild.sh beta" then it will not filter out prerelease
 if [[ "$1" == "beta" ]];then
-	latest_ver=$(curl -s https://api.github.com/repos/signalapp/signal-desktop/releases|jq -r '.[] | .name'|head -n1)
+	latest_ver=$(curl -s https://api.github.com/repos/signalapp/signal-desktop/releases|jq -r '.[] | .tag_name'|head -n1)
 fi
 
 # determine if a build needs to be done at all
