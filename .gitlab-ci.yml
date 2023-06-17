@@ -28,6 +28,7 @@ build:
   script:
     - bash -c ./ci-build.sh
     - cp ~/signal-desktop.deb .
+    - cp ~/signal-desktop_$VERSION.tar.xz .
     - doas mkdir -p /opt/pakrepo
     - doas chown "$USER" /opt/pakrepo
     - flatpak-builder --arch=aarch64 --gpg-sign=FBEF43DC8C6BE9A7 --repo=/opt/pakrepo --force-clean .builddir flatpak.yml
