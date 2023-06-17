@@ -10,7 +10,7 @@ variables:
 before_script:
   - shopt -s expand_aliases
   - shopt -s localvar_inherit
-  - sudo apt install -qq -y bash rsync podman flatpak elfutils coreutils slirp4netns rootlesskit binfmt-support fuse-overlayfs flatpak-builder qemu-user-static
+  - doas apt install -qq -y bash rsync podman flatpak elfutils coreutils slirp4netns rootlesskit binfmt-support fuse-overlayfs flatpak-builder qemu-user-static
   - doas flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
   - doas flatpak install --arch=aarch64 flathub org.electronjs.Electron2.BaseApp//21.08 org.freedesktop.Platform//21.08 org.freedesktop.Sdk//21.08 -y
   - doas flatpak update -y
@@ -28,8 +28,8 @@ build:
   script:
     - bash -c ./ci-build.sh
     - cp ~/signal-desktop.deb .
-    - sudo mkdir -p /opt/pakrepo
-    - sudo chown "$USER" /opt/pakrepo
+    - doas mkdir -p /opt/pakrepo
+    - doas chown "$USER" /opt/pakrepo
     - flatpak-builder --arch=aarch64 --gpg-sign=FBEF43DC8C6BE9A7 --repo=/opt/pakrepo --force-clean .builddir flatpak.yml
   artifacts:
     when: always
