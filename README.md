@@ -24,6 +24,8 @@ The process works through CI fairly well. I've included all the files in this re
 - `.github/workflows/build.yml` is for [github](https://github.com) actions. You will need the secrets I specified by name in the build manifest.
 - `.gitlab-ci.yml` is obviously for [gitlab](https://gitlab.com) ci but is kind of incomplete, since I ran it on a self-hosted runner. This one you'll need to figure out yourself.
 
+The builds take hours when cross-compiling and frequently time out in github's shared runners, but they take less time on a relatively powerful ARM server. [Oracle Cloud Free Tier](https://www.oracle.com/cloud/free/) will give you ARM servers for free. Yes, I know, it's Oracle, but this is genuinely the best way to build these. You can set one up as a self-hosted github/gitlab runner and it'll build the flatpak in 25 minutes.
+
 To build by hand, you will need an Ubuntu or Debian server.
 
 ### Installing dependencies
