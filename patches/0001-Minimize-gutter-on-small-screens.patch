@@ -1,6 +1,6 @@
-From a8a789c22092d8a56dfb94af64a3cd073c9e5c3f Mon Sep 17 00:00:00 2001
+From 87775b254aee1ed17bf2dddf2ba3e7df17b1add6 Mon Sep 17 00:00:00 2001
 From: Undef <gitlab@undef.tools>
-Date: Sat, 10 Dec 2022 12:20:46 +1100
+Date: Sun, 27 Aug 2023 22:16:50 +0200
 Subject: [PATCH] Minimize width of left pane on open
 
 ---
@@ -8,11 +8,11 @@ Subject: [PATCH] Minimize width of left pane on open
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/ts/state/selectors/items.ts b/ts/state/selectors/items.ts
-index 8fbe2e6b3..f24618c4b 100644
+index 75ebfb353..ee2117f0a 100644
 --- a/ts/state/selectors/items.ts
 +++ b/ts/state/selectors/items.ts
-@@ -20,7 +20,7 @@ import { isBeta } from '../../util/version';
- import { DurationInSeconds } from '../../util/durations';
+@@ -23,7 +23,7 @@ import { generateUsernameLink } from '../../util/sgnlHref';
+ import * as Bytes from '../../Bytes';
  import { getUserNumber, getUserACI } from './user';
  
 -const DEFAULT_PREFERRED_LEFT_PANE_WIDTH = 320;
@@ -21,5 +21,5 @@ index 8fbe2e6b3..f24618c4b 100644
  export const getItems = (state: StateType): ItemsStateType => state.items;
  
 -- 
-2.35.1
+2.42.0
 
