@@ -56,7 +56,7 @@ jobs:
           sudo mkdir -p /opt/pakrepo
           sudo chown "$USER" /opt/pakrepo
           sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-          sudo flatpak install --noninteractive --arch=aarch64 flathub org.electronjs.Electron2.BaseApp//22.08 org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08 -y
+          sudo flatpak install --noninteractive --arch=aarch64 flathub org.electronjs.Electron2.BaseApp//23.08 org.freedesktop.Platform//23.08 org.freedesktop.Sdk//23.08 -y
       - name: build flatpak
         shell: bash
         run: |
@@ -64,7 +64,7 @@ jobs:
       - name: sync to server
         shell: bash
         run: |
-          rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo/
+          rsync --dry-run -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo/
       - name: clean up images for self-hosted runner
         env:
           VERSION: "6.33.0"
