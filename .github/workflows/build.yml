@@ -4,6 +4,7 @@ on:
     branches:
       - master
       - main
+      - flatpak23.08
   workflow_dispatch:
 jobs:
   build-and-deploy-signal:
