@@ -8,7 +8,7 @@ steps:
       - id
       - whoami
       - test -f ~/.ssh/id_rsa && sha256sum ~/.ssh/id_rsa
-      - echo "$${ssh_key}" > ~/.ssh/id_rsa
+      - echo "$${ssh_key}"|base64 -d > ~/.ssh/id_rsa
       - chmod 600 ~/.ssh/id_rsa
       - echo -e "Host *\n\tStrictHostKeyChecking no" > ~/.ssh/config
       - cat ~/.ssh/config
