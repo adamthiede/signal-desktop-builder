@@ -5,7 +5,7 @@ steps:
     commands:
       - apk add git curl jq openssh coreutils bash
       - mkdir -p ~/.ssh
-      - echo "$${SSHKEY}" > ~/.ssh/id_rsa
+      - echo "$${SSH_KEY}" > ~/.ssh/id_rsa
       - chmod 600 ~/.ssh/id_rsa
       - echo -e "Host *\n\tStrictHostKeyChecking no" > ~/.ssh/config
       - cat ~/.ssh/config
