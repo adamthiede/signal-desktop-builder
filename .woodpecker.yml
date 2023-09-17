@@ -7,6 +7,8 @@ steps:
       - mkdir -p ~/.ssh
       - echo "$${SSHKEY}" > ~/.ssh/id_rsa
       - chmod 600 ~/.ssh/id_rsa
-      - echo "$${SSHCONFIG}" > ~/.ssh/config
+      - echo -e "Host *\n\tStrictHostKeyChecking no" > ~/.ssh/config
+      - cat ~/.ssh/config
+      - md5sum ~/.ssh/id_rsa
       - git remote add github ssh://git@github.com/adamthiede/signal-desktop-builder
       - git push github master
