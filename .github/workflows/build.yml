@@ -2,9 +2,9 @@ name: build and deploy signal
 on:
   push:
     branches:
-      - master
       - main
-      - flatpak23.08
+      - master
+      - testing
   workflow_dispatch:
 jobs:
   build-and-deploy-signal:
@@ -12,6 +12,8 @@ jobs:
     #runs-on: ubuntu-latest
     name: build and deploy signal
     steps:
+      - name: Set env.BRANCH
+        run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
       - name: install secrets 
         shell: bash
         env:
@@ -64,8 +66,9 @@ jobs:
           flatpak-builder --arch=aarch64 --gpg-sign=FBEF43DC8C6BE9A7 --repo=/opt/pakrepo --force-clean .builddir flatpak.yml
       - name: sync to server
         shell: bash
+        if: env.BRANCH == 'master'
         run: |
-          rsync --dry-run -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo/
+          rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo/
       - name: clean up images for self-hosted runner
         env:
           VERSION: "6.33.0"
