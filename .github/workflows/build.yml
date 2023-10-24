@@ -44,13 +44,6 @@ jobs:
           bash ci-build.sh
           podman stop signal-desktop-$VERSION
           cp ~/signal-desktop.deb .
-      - name: upload .deb as build artifact 
-        env:
-          VERSION: "6.35.0"
-        uses: actions/upload-artifact@v3
-        with:
-          name: signal-desktop-arm64-${{ env.VERSION }}.deb
-          path: signal-desktop.deb
       - name: install flatpak deps
         shell: bash
         env:
@@ -69,6 +62,14 @@ jobs:
         if: env.BRANCH == 'master'
         run: |
           rsync -azu --delete /opt/pakrepo/ server:/home/www/elagost.com/flatpak/repo/
+      - name: upload .deb as build artifact 
+        continue-on-error: true
+        env:
+          VERSION: "6.35.0"
+        uses: actions/upload-artifact@v3
+        with:
+          name: signal-desktop-arm64-${{ env.VERSION }}.deb
+          path: signal-desktop.deb
       - name: clean up images for self-hosted runner
         env:
           VERSION: "6.35.0"
