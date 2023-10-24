@@ -68,7 +68,7 @@ jobs:
         shell: bash
         if: env.BRANCH == 'master'
         run: |
-          rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo/
+          rsync -azu --delete /opt/pakrepo/ server:/home/www/elagost.com/flatpak/repo/
       - name: clean up images for self-hosted runner
         env:
           VERSION: "6.35.0"
