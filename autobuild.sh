@@ -16,7 +16,6 @@ fi
 
 # determine if a build needs to be done at all
 if [[ "$latest_ver" == "$(cat autobuild.version)" ]];then
-	echo "Nothing to do."
 	exit 0
 else
 	echo $latest_ver > autobuild.version
