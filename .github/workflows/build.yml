@@ -49,9 +49,9 @@ jobs:
         env:
           CI_USER: runner
         run: |
+          sudo rm -rf /opt/pakrepo/
           sudo mkdir -p /opt/pakrepo
           sudo chown "$USER" /opt/pakrepo
-          sudo rm -rf /opt/pakrepo/*
           sudo flatpak update --noninteractive -y
           sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
           sudo flatpak install --noninteractive --arch=aarch64 flathub org.electronjs.Electron2.BaseApp//23.08 org.freedesktop.Platform//23.08 org.freedesktop.Sdk//23.08 -y
