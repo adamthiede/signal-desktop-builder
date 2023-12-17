@@ -61,7 +61,7 @@ jobs:
         shell: bash
         if: env.BRANCH == 'master'
         run: |
-          rsync -azu --delete /opt/pakrepo/ server:/home/www/elagost.com/flatpak/repo/
+          rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo/
       - name: upload .deb as build artifact 
         continue-on-error: true
         env:
