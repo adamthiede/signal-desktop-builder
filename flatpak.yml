@@ -1,4 +1,4 @@
-app-id: org.signal.Signal
+id: org.signal.Signal
 base: org.electronjs.Electron2.BaseApp
 base-version: '23.08'
 runtime: org.freedesktop.Platform
@@ -11,33 +11,34 @@ rename-icon: signal-desktop
 finish-args:
   # X11 performance
   - --share=ipc
-  # Access to X11 (this is a GUI)
+  # We need X11
   - --socket=x11
   # Access to wayland
   - --socket=wayland
-  - --filesystem=xdg-run/pipewire-0
   # Audio Access
   - --socket=pulseaudio
+  # All devices (camera, video for calls)
   - --device=all
   # Network Access
   - --share=network
-  # Access to many files
-  - --filesystem=xdg-desktop
-  - --filesystem=xdg-documents
-  - --filesystem=xdg-download
-  - --filesystem=xdg-music
-  - --filesystem=xdg-pictures
-  - --filesystem=xdg-public-share
-  - --filesystem=xdg-videos
-  # We need to send notifications
-  - --talk-name=org.freedesktop.Notifications
+  # We need to be able to inhibit sleep
+  - --system-talk-name=org.freedesktop.login1
+  - --talk-name=org.gnome.SessionManager
+  - --talk-name=org.freedesktop.PowerManagement
+  - --talk-name=org.freedesktop.ScreenSaver
+  - --talk-name=org.gnome.Mutter.IdleMonitor
   - --talk-name=org.kde.StatusNotifierWatcher
-  # Allow running in background
-  - --talk-name=org.freedesktop.portal.Background
+  - --talk-name=com.canonical.AppMenu.Registrar
+  - --talk-name=com.canonical.indicator.application
+  - --talk-name=org.ayatana.indicator.application
   # Allow advanced input methods
   - --talk-name=org.freedesktop.portal.Fcitx
-  # This is needed for the tray icon
-  - --own-name=org.kde.*
+  - --env=SIGNAL_USE_TRAY_ICON=0
+  - --env=SIGNAL_START_IN_TRAY=0
+  - --env=SIGNAL_USE_WAYLAND=0
+  - --env=SIGNAL_DISABLE_GPU=0
+  - --env=SIGNAL_DISABLE_GPU_SANDBOX=0
+  - --env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons
 
 modules:
   - name: signal-desktop
