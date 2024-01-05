@@ -37,7 +37,7 @@ jobs:
       - name: build deb
         shell: bash
         env:
-          VERSION: "6.43.0"
+          VERSION: "6.43.1"
         run: |
           set -x
           echo "Version is: $VERSION"
@@ -67,14 +67,14 @@ jobs:
       - name: upload .deb as build artifact 
         continue-on-error: true
         env:
-          VERSION: "6.43.0"
+          VERSION: "6.43.1"
         uses: actions/upload-artifact@v3
         with:
           name: signal-desktop-arm64-${{ env.VERSION }}.deb
           path: signal-desktop.deb
       - name: clean up images for self-hosted runner
         env:
-          VERSION: "6.43.0"
+          VERSION: "6.43.1"
         shell: bash
         run: |
           podman container rm signal-desktop-${{ env.VERSION }}
