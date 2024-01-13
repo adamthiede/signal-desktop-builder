@@ -59,7 +59,8 @@ jobs:
         shell: bash
         run: |
           flatpak-builder --arch=aarch64 --gpg-sign=FBEF43DC8C6BE9A7 --repo=/opt/pakrepo --force-clean .builddir flatpak.yml
-          flatpak build-bundle --arch=aarch64 /opt/pakrepo ~/signal.flatpak org.signal.Signal master
+          flatpak build-bundle --arch=aarch64 /opt/pakrepo ./signal.flatpak org.signal.Signal master
+          cp ./signal.flatpak ~/
       - name: sync to server
         shell: bash
         if: env.BRANCH == 'master'
