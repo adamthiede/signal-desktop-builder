@@ -66,6 +66,8 @@ jobs:
         if: env.BRANCH == 'master'
         run: |
           rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo/
+          rsync -z ~/signal-desktop.deb server:/var/www/htdocs/elagost.com/flatpak/
+          rsync -z ~/signal.flatpak server:/var/www/htdocs/elagost.com/flatpak/
       - name: upload .deb as build artifact
         continue-on-error: true
         env:
