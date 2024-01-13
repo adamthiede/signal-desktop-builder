@@ -94,6 +94,10 @@ flatpak-builder --arch=aarch64 --gpg-sign=<Key ID> --repo=./repodir --force-clea
 
 Now you have your `.flatpakrepo` file and your `./repodir`. You can put those on a web server and tell people about them, or use them yourself.
 
+If you just want to build a standalone .flatpak bundle that you can install anywhere, instead of building a repo:
+
+`flatpak build-bundle --arch=aarch64 ./repodir ./signal.flatpak org.signal.Signal master`
+
 ## Github Actions notes:
 
 to publish a new release:
