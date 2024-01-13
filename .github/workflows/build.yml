@@ -59,12 +59,13 @@ jobs:
         shell: bash
         run: |
           flatpak-builder --arch=aarch64 --gpg-sign=FBEF43DC8C6BE9A7 --repo=/opt/pakrepo --force-clean .builddir flatpak.yml
+          flatpak build-bundle --arch=aarch64 /opt/pakrepo ~/signal.flatpak org.signal.Signal master
       - name: sync to server
         shell: bash
         if: env.BRANCH == 'master'
         run: |
           rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo/
-      - name: upload .deb as build artifact 
+      - name: upload .deb as build artifact
         continue-on-error: true
         env:
           VERSION: "6.44.0"
@@ -72,6 +73,12 @@ jobs:
         with:
           name: signal-desktop-arm64-${{ env.VERSION }}.deb
           path: signal-desktop.deb
+      - name: upload flatpak bundle as build artifact
+        continue-on-error: true
+        uses: actions/upload-artifact@v3
+        with:
+          name: signal.flatpak
+          path: signal.flatpak
       - name: clean up images for self-hosted runner
         env:
           VERSION: "6.44.0"
