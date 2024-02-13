@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
 jobs:
   a-publish-release:
-    runs-on: self-hosted
-    #runs-on: ubuntu-latest
-    name: publish release
+    #runs-on: self-hosted
+    runs-on: ubuntu-latest
+    name: '1 publish release'
     steps:
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
@@ -26,7 +26,7 @@ jobs:
   b-build-and-deploy-signal:
     runs-on: self-hosted
     #runs-on: ubuntu-latest
-    name: build and deploy signal
+    name: '2 build and deploy signal'
     steps:
       - name: Set env.BRANCH
         run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
