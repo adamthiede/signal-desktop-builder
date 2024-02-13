@@ -7,7 +7,7 @@ on:
       - testing
   workflow_dispatch:
 jobs:
-  1-publish-release:
+  a-publish-release:
     runs-on: self-hosted
     #runs-on: ubuntu-latest
     name: publish release
@@ -23,7 +23,7 @@ jobs:
           prerelease: false
           release_name: ${{ github.ref }}
           tag_name: ${{ github.ref }}
-  2-build-and-deploy-signal:
+  b-build-and-deploy-signal:
     runs-on: self-hosted
     #runs-on: ubuntu-latest
     name: build and deploy signal
