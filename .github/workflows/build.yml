@@ -13,15 +13,16 @@ jobs:
     name: publish release
     steps:
       - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: startsWith(github.ref, 'refs/tags/')
         uses: actions/create-release@v1
         id: create_release
-          with:
-            draft: false
-            prerelease: false
-            release_name: ${{ github.ref }}
-            tag_name: ${{ github.ref }}
-            env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ github.ref }}
+          tag_name: ${{ github.ref }}
   build-and-deploy-signal:
     runs-on: self-hosted
     #runs-on: ubuntu-latest
