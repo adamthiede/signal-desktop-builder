@@ -95,8 +95,6 @@ jobs:
         uses: AButler/upload-release-assets@v3.0
         with:
           release-tag: ${{ env.VERSION }}
-          files:
-            - signal-desktop-arm64-${{ env.VERSION }}.deb
-            - signal.flatpak
+          files: "signal-desktop-arm64-${{ env.VERSION }}.deb;signal.flatpak"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
