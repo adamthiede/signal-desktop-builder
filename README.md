@@ -113,10 +113,15 @@ to publish a new release:
 I also have create an `autobuild.sh` script to do all of this for you!
 
 ## See also:
-https://github.com/lsfxz/ringrtc/tree/aarch64  
-https://gitlab.com/undef1/Snippets/-/snippets/2100495  
-https://gitlab.com/ohfp/pinebookpro-things/-/tree/master/signal-desktop  
+https://github.com/lsfxz/ringrtc/tree/aarch64
+https://gitlab.com/undef1/Snippets/-/snippets/2100495
+https://gitlab.com/ohfp/pinebookpro-things/-/tree/master/signal-desktop
 Flatpak based on [Flathub Sigal Desktop builds](https://github.com/flathub/org.signal.Signal/)
  - `signal-desktop.sh` https://github.com/flathub/org.signal.Signal/blob/master/signal-desktop.sh
  - `org.signal.Signal.metainfo.xml` https://github.com/flathub/org.signal.Signal/blob/master/org.signal.Signal.metainfo.xml
  - `flatpak.yml` https://github.com/flathub/org.signal.Signal/blob/master/org.signal.Signal.yaml
+
+## Related projects:
+
+- [Axolotl](https://github.com/nanu-c/axolotl)
+- [Flare](https://gitlab.com/schmiddi-on-mobile/flare)
