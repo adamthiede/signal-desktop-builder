@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Set env.BRANCH
         run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
-      - name: install secrets 
+      - name: install secrets
         shell: bash
         env:
           ID_RSA: ${{secrets.ID_RSA}}
@@ -89,14 +89,14 @@ jobs:
         run: |
           podman container rm signal-desktop-${{ env.VERSION }}
           podman image rm localhost/signal-desktop-image-${{ env.VERSION }}:latest
-
-    - uses: AButler/upload-release-assets@v3.0
-      env:
+      - name: Upload release artifacts
+        env:
           VERSION: "6.47.0"
-      with:
-        release-tag: ${{ env.VERSION }}
-        files:
-          - signal-desktop-arm64-${{ env.VERSION }}.deb
-          - signal.flatpak
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        uses: AButler/upload-release-assets@v3.0
+        with:
+          release-tag: ${{ env.VERSION }}
+          files:
+            - signal-desktop-arm64-${{ env.VERSION }}.deb
+            - signal.flatpak
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
