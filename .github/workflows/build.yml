@@ -1,10 +1,12 @@
 name: build and deploy signal
 on:
   push:
-    branches:
-      - main
-      - master
-      - testing
+    tags:
+      - '*'
+        #branches:
+        #  - main
+        #  - master
+        #  - testing
   workflow_dispatch:
 jobs:
   a-publish-release:
