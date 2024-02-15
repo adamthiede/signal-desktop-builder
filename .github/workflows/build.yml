@@ -81,7 +81,6 @@ jobs:
           cp ./signal.flatpak ~/
       - name: sync to server
         shell: bash
-        if: env.BRANCH == 'master'
         run: |
           rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo/
           rsync -z ~/signal-desktop.deb server:/var/www/htdocs/elagost.com/flatpak/
