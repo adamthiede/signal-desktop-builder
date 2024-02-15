@@ -11,10 +11,10 @@ For directions on installing the flatpak, seek [here](https://elagost.com/flatpa
 
 [![build and deploy signal](https://github.com/adamthiede/signal-desktop-builder/actions/workflows/build.yml/badge.svg)](https://github.com/adamthiede/signal-desktop-builder/actions/workflows/build.yml)
 
-## Installing via Deb
+## Installing via .deb or .flatpak bundle
 
 - The upstream repo provides .deb binaries [here](https://gitlab.com/undef1/signal-desktop-builder/-/packages) for some releases.
-- This repo provides .deb binaries as a CI artifacts; go to [actions](https://github.com/adamthiede/signal-desktop-builder/actions) and there should be a .deb attached to the latest run.
+- This repo provides .deb and .flatpak binaries as release artifacts [here](https://github.com/adamthiede/signal-desktop-builder/releases)
 
 ## Building Signal
 
