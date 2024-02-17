@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/create-release@v1
+        uses: ncipollo/release-action@v1
         id: create_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -47,7 +47,7 @@ jobs:
           echo "$SSHCONFIG" > ~/.ssh/config
           echo "$GPG_KEY" | gpg --import
       - name: checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: install deps
         shell: bash
         run: |
