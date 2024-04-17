@@ -23,8 +23,8 @@ jobs:
         with:
           draft: false
           prerelease: false
-          release_name: ${{ github.ref }}
-          tag_name: ${{ github.ref }}
+          name: ${{ github.ref }}
+          tag: ${{ github.ref }}
   b-build-and-deploy-signal:
     runs-on: self-hosted
     #runs-on: ubuntu-latest

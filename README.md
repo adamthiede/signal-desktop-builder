@@ -124,3 +124,12 @@ Flatpak based on [Flathub Sigal Desktop builds](https://github.com/flathub/org.s
 
 - [Axolotl](https://github.com/nanu-c/axolotl)
 - [Flare](https://gitlab.com/schmiddi-on-mobile/flare)
+
+## Can these builds be trusted?
+
+Only insofar as you can trust upstream Signal. There's almost nothing custom going on here. The builds you see in CI produce the artifacts on the release tag and automatically sync to the repo. There's nothing in between the two. You can decide from there.
+
+This only exists because some people wanted Signal to work on the Pinephone, and it would take more work to _not_ make it a public thing. Plus this way I can get help from some awesome contributors.
+
+So no, you can't trust these builds, you can't trust any software or anyone, but I can assure you at least I'm not trying to do anything weird here.
+
