@@ -62,6 +62,7 @@ jobs:
           bash ci-build.sh
           podman stop signal-desktop-$VERSION
           cp ~/signal-desktop.deb .
+          sha256sum signal-desktop.deb | tee checksums.txt
       - name: install flatpak deps
         shell: bash
         env:
@@ -79,6 +80,7 @@ jobs:
           flatpak-builder --arch=aarch64 --gpg-sign=FBEF43DC8C6BE9A7 --repo=/opt/pakrepo --force-clean .builddir flatpak.yml
           flatpak build-bundle --arch=aarch64 /opt/pakrepo ./signal.flatpak org.signal.Signal master
           cp ./signal.flatpak ~/
+          sha256sum signal.flatpak | tee -a checksums.txt
       - name: sync to server
         shell: bash
         run: |
@@ -98,6 +100,6 @@ jobs:
         uses: AButler/upload-release-assets@v3.0
         with:
           release-tag: ${{ env.VERSION }}
-          files: "signal-desktop.deb;signal.flatpak"
+          files: "signal-desktop.deb;signal.flatpak;checksums.txt"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
