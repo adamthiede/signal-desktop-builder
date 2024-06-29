@@ -48,21 +48,27 @@ jobs:
           echo "$GPG_KEY" | gpg --import
       - name: checkout code
         uses: actions/checkout@v4
-      - name: install deps
-        shell: bash
-        run: |
-          sudo apt install -qq -y bash rsync podman flatpak elfutils coreutils slirp4netns rootlesskit binfmt-support fuse-overlayfs flatpak-builder qemu-user-static
-      - name: build deb
-        shell: bash
+      - name: checkout code
+        uses: actions/checkout@v4
+        with:
+          repository: adamthiede/flatpak-builder-tools
+          path: flatpak-builder-tools
+          ref: fix_firefox_error
+      - name: checkout code
+        uses: actions/checkout@v4
         env:
           VERSION: "7.14.0"
+        with:
+          repository: signalapp/signal-desktop
+          path: signal-desktop
+          ref: refs/tags/${{ env.VERSION }}
+      - name: run os setup stuff
+        shell: bash
         run: |
-          set -x
-          echo "Version is: $VERSION"
-          bash ci-build.sh
-          podman stop signal-desktop-$VERSION
-          cp ~/signal-desktop.deb .
-          sha256sum signal-desktop.deb | tee checksums.txt
+          sudo apt install -qq -y bash rsync podman flatpak elfutils coreutils slirp4netns rootlesskit binfmt-support fuse-overlayfs flatpak-builder qemu-user-static pipx
+          cd flatpak-builder-tools/node && pipx intstall .
+          ~/.local/bin/flatpak-node-generator yarn ./signal-desktop/yarn.lock
+          cp signal-desktop/generated-sources.json .
       - name: install flatpak deps
         shell: bash
         env:
@@ -74,6 +80,9 @@ jobs:
           sudo flatpak update --noninteractive -y
           sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
           sudo flatpak install --noninteractive --arch=aarch64 flathub org.electronjs.Electron2.BaseApp//23.08 org.freedesktop.Platform//23.08 org.freedesktop.Sdk//23.08 -y
+      - name: build flatpak
+        shell: bash
+        run: |
       - name: build flatpak
         shell: bash
         run: |

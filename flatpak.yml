@@ -4,6 +4,16 @@ base-version: '23.08'
 runtime: org.freedesktop.Platform
 runtime-version: '23.08'
 sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.node20
+build-options:
+  append-path: /usr/lib/sdk/node20/bin
+  env:
+    XDG_CACHE_HOME: /run/build/signal-desktop/flatpak-node/cache
+    npm_config_cache: /run/build/signal-desktop/flatpak-node/npm-cache
+    npm_config_nodedir: /usr/lib/sdk/node20
+    npm_config_offline: 'true'
+
 command: signal-desktop
 separate-locales: false
 rename-desktop-file: signal-desktop.desktop
@@ -43,6 +53,7 @@ modules:
   - name: signal-desktop
     buildsystem: simple
     build-commands:
+      - yarn
       - install -Dm0755 signal-desktop.sh "${FLATPAK_DEST}/bin/signal-desktop"
       - install -Dm0644 "${FLATPAK_ID}.metainfo.xml" "${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml"
       - |
@@ -59,10 +70,7 @@ modules:
       - desktop-file-edit --set-key=Icon --set-value="signal-desktop" "${FLATPAK_DEST}/share/applications/signal-desktop.desktop"
       - desktop-file-edit --set-key=X-Purism-FormFactor --set-value="Workstation;Mobile;" "${FLATPAK_DEST}/share/applications/signal-desktop.desktop"
     sources:
-      - type: file
-        path: signal-desktop.deb
-        only-arches:
-          - aarch64
+      - generated-sources.json
       - type: file
         path: signal-desktop.sh
       - type: file
