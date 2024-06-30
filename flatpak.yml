@@ -80,9 +80,11 @@ modules:
       - desktop-file-edit --set-key=X-Purism-FormFactor --set-value="Workstation;Mobile;" "${FLATPAK_DEST}/share/applications/signal-desktop.desktop"
     sources:
       - generated-sources.json
-      - type: archive
-        url: https://github.com/signalapp/Signal-Desktop/archive/refs/tags/v7.14.0.tar.gz
-        sha256: 9a7640c302479cf230fd837ac56d3ce5bd61c3217fbf2f68203684753d69a46a
+      - type: git
+        url: https://github.com/signalapp/Signal-Desktop
+        branch_name: "refs/tags/v${sver}"
+        # should always be latest commit from this branch
+        commit: 192f5f73015d47a7821020e0c19438fe67383118
       - type: file
         path: signal-desktop.sh
       - type: file
