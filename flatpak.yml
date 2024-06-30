@@ -10,9 +10,11 @@ build-options:
   append-path: /usr/lib/sdk/node20/bin
   env:
     XDG_CACHE_HOME: /run/build/signal-desktop/flatpak-node/cache
-    npm_config_cache: /run/build/signal-desktop/flatpak-node/npm-cache
+    npm_config_cache: /run/build/signal-desktop/flatpak-node/yarn-mirror
+    YARN_CACHE_FOLDER: /run/build/signal-desktop/flatpak-node/yarn-mirror
     npm_config_nodedir: /usr/lib/sdk/node20
     npm_config_offline: 'true'
+    sver: 7.14.0
 
 command: signal-desktop
 separate-locales: false
@@ -53,7 +55,14 @@ modules:
   - name: signal-desktop
     buildsystem: simple
     build-commands:
-      - yarn
+      - |
+        sed -i -e 's/"node": "20.*"/"node": "20"/' package.json 
+      - ls -alh $YARN_CACHE_FOLDER
+      - |
+        yarn --offline config set yarn-offline-mirror $YARN_CACHE_FOLDER
+        echo yarn-offline-mirror "$YARN_CACHE_FOLDER" >> .yarnrc
+      - rm yarn.lock
+      - yarn install --offline
       - install -Dm0755 signal-desktop.sh "${FLATPAK_DEST}/bin/signal-desktop"
       - install -Dm0644 "${FLATPAK_ID}.metainfo.xml" "${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml"
       - |
@@ -71,6 +80,9 @@ modules:
       - desktop-file-edit --set-key=X-Purism-FormFactor --set-value="Workstation;Mobile;" "${FLATPAK_DEST}/share/applications/signal-desktop.desktop"
     sources:
       - generated-sources.json
+      - type: archive
+        url: https://github.com/signalapp/Signal-Desktop/archive/refs/tags/v7.14.0.tar.gz
+        sha256: 9a7640c302479cf230fd837ac56d3ce5bd61c3217fbf2f68203684753d69a46a
       - type: file
         path: signal-desktop.sh
       - type: file
