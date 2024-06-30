@@ -57,11 +57,11 @@ modules:
     build-commands:
       - |
         sed -i -e 's/"node": "20.*"/"node": "20"/' package.json 
-      - ls -alh $YARN_CACHE_FOLDER
       - |
         yarn --offline config set yarn-offline-mirror $YARN_CACHE_FOLDER
         echo yarn-offline-mirror "$YARN_CACHE_FOLDER" >> .yarnrc
-      - rm yarn.lock
+        yarn --offline config list|grep yarn-offline-mirror
+      - sleep 5
       - yarn install --offline
       - install -Dm0755 signal-desktop.sh "${FLATPAK_DEST}/bin/signal-desktop"
       - install -Dm0644 "${FLATPAK_ID}.metainfo.xml" "${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml"
