@@ -62,11 +62,11 @@ modules:
         echo yarn-offline-mirror "$YARN_CACHE_FOLDER" >> .yarnrc
         yarn --offline config list|grep yarn-offline-mirror
       - |
+        cp yarn.lock yarn_lock_bak
         yarn install --offline --non-interactive
-        mkdir -p node_modules/@signalapp/ringrtc/scripts/ && cp ringrtc-desktop-build-v2.44.0.tar.gz node_modules/@signalapp/ringrtc/scripts/prebuild.tar.gz
-        cd node_modules/@signalapp/ringrtc/ && tar xzf scripts/prebuild.tar.gz
+        mkdir -p node_modules/@signalapp/ringrtc/scripts/ && cp ringrtc-desktop-build-v2.44.0.tar.gz node_modules/@signalapp/ringrtc/scripts/prebuild.tar.gz && tar -C node_modules/@signalapp/ringrtc -xzf ringrtc-desktop-build-v2.44.0.tar.gz
         yarn install --offline --non-interactive
-      - yarn build:release --offline --arm64 --linux --dir
+        yarn build:release --offline --arm64 --linux --dir
       - install -Dm0755 signal-desktop.sh "${FLATPAK_DEST}/bin/signal-desktop"
       - install -Dm0644 "${FLATPAK_ID}.metainfo.xml" "${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml"
       - |
@@ -84,6 +84,8 @@ modules:
       - desktop-file-edit --set-key=X-Purism-FormFactor --set-value="Workstation;Mobile;" "${FLATPAK_DEST}/share/applications/signal-desktop.desktop"
     sources:
       - generated-sources.json
+      - generated-sources-sticker-creator.json
+      - generated-sources-danger.json
       - type: file
         url: https://build-artifacts.signal.org/libraries/ringrtc-desktop-build-v2.44.0.tar.gz
         sha256: a717f07c4a73ea43a5bcd7009a709cc149dc280aa5f1d0cf9d651c0d5eab59a8
