@@ -57,7 +57,7 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v4
         env:
-          VERSION: "7.14.0"
+          VERSION: "7.15.0"
         with:
           repository: signalapp/signal-desktop
           path: signal-desktop
@@ -98,14 +98,14 @@ jobs:
           rsync -z ~/signal.flatpak server:/var/www/htdocs/elagost.com/flatpak/
       - name: clean up images for self-hosted runner
         env:
-          VERSION: "7.14.0"
+          VERSION: "7.15.0"
         shell: bash
         run: |
           podman container rm signal-desktop-${{ env.VERSION }}
           podman image rm localhost/signal-desktop-image-${{ env.VERSION }}:latest
       - name: Upload release artifacts
         env:
-          VERSION: "7.14.0"
+          VERSION: "7.15.0"
         uses: AButler/upload-release-assets@v3.0
         with:
           release-tag: ${{ env.VERSION }}
