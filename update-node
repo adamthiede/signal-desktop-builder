@@ -3,7 +3,7 @@ set -ex
 
 version=$1
 
-node_version=$(curl https://raw.githubusercontent.com/signalapp/Signal-Desktop/${version}/package.json | jq .engines.node | tr -d '"')
+node_version=$(curl -s https://raw.githubusercontent.com/signalapp/Signal-Desktop/${version}/package.json | jq .engines.node | tr -d '"')
 if grep -q ${node_version} node.sums; then
     echo "Already up to date"
     exit 0
