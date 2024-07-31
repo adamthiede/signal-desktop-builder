@@ -46,7 +46,7 @@ commit(){
 	git commit -am "Autobuild for $version,branch $branch"
 	git tag $version
 	git push
-	git push origin $version
+	git push -f origin $version
 }
 git status | grep "nothing to commit, working tree clean" || commit
 
