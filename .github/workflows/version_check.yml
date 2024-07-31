@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.OTHER_TOKEN }}
       - name: install deps
         shell: bash
         run: |

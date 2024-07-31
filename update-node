@@ -9,6 +9,6 @@ if grep -q ${node_version} node.sums; then
     exit 0
 fi
 sed -i "s:ENV NODE_VERSION=.*:ENV NODE_VERSION=v${node_version}:" Dockerfile
-wget https://nodejs.org/dist/v${node_version}/node-v${node_version}-linux-arm64.tar.gz
+curl -sLO https://nodejs.org/dist/v${node_version}/node-v${node_version}-linux-arm64.tar.gz
 sha256sum node-v${node_version}-linux-arm64.tar.gz > node.sums
 sed -i "s:node:/opt/node:" node.sums
