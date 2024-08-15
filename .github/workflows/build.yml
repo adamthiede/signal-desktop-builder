@@ -55,7 +55,7 @@ jobs:
       - name: build deb
         shell: bash
         env:
-          VERSION: "7.19.1"
+          VERSION: "7.20.0"
         run: |
           set -x
           echo "Version is: $VERSION"
@@ -89,14 +89,14 @@ jobs:
           rsync -z ~/signal.flatpak server:/var/www/htdocs/elagost.com/flatpak/
       - name: clean up images for self-hosted runner
         env:
-          VERSION: "7.19.1"
+          VERSION: "7.20.0"
         shell: bash
         run: |
           podman container rm signal-desktop-${{ env.VERSION }}
           podman image rm localhost/signal-desktop-image-${{ env.VERSION }}:latest
       - name: Upload release artifacts
         env:
-          VERSION: "7.19.1"
+          VERSION: "7.20.0"
         uses: AButler/upload-release-assets@v3.0
         with:
           release-tag: ${{ env.VERSION }}
