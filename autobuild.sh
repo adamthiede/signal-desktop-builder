@@ -48,5 +48,5 @@ commit(){
 	git push
 	git push origin $version
 }
-git status | grep "nothing to commit, working tree clean" || commit
+#git status | grep "nothing to commit, working tree clean" || commit
 

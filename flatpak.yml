@@ -14,7 +14,7 @@ build-options:
     YARN_CACHE_FOLDER: /run/build/signal-desktop/flatpak-node/yarn-mirror
     npm_config_nodedir: /usr/lib/sdk/node20
     npm_config_offline: 'true'
-    sver: 7.14.0
+    sver: 7.20.0
 
 command: signal-desktop
 separate-locales: false
@@ -91,14 +91,11 @@ modules:
       - generated-sources.json
       - generated-sources-sticker-creator.json
       - generated-sources-danger.json
-      - type: file
-        url: https://build-artifacts.signal.org/libraries/ringrtc-desktop-build-v2.44.0.tar.gz
-        sha256: a717f07c4a73ea43a5bcd7009a709cc149dc280aa5f1d0cf9d651c0d5eab59a8
       - type: git
         url: https://github.com/signalapp/Signal-Desktop
         branch_name: "refs/tags/v${sver}"
         # should always be latest commit from this branch
-        commit: 192f5f73015d47a7821020e0c19438fe67383118
+        commit: 67f74918890c1a6445deac4106f1ecdee048d54d
       - type: file
         path: signal-desktop.sh
       - type: file
