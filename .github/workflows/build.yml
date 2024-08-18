@@ -81,12 +81,19 @@ jobs:
           flatpak build-bundle --arch=aarch64 /opt/pakrepo ./signal.flatpak org.signal.Signal master
           cp ./signal.flatpak ~/
           sha256sum signal.flatpak | tee -a checksums.txt
-      - name: sync to server
+      - name: checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - name: sync to gh-pages branch repo dir and commit
         shell: bash
         run: |
-          rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo/
-          rsync -z ~/signal-desktop.deb server:/var/www/htdocs/elagost.com/flatpak/
-          rsync -z ~/signal.flatpak server:/var/www/htdocs/elagost.com/flatpak/
+          rsync -a --delete /opt/pakrepo/ ./repo/
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
+          git add repo
+          git commit -m "repo update"
+          git push
       - name: clean up images for self-hosted runner
         env:
           VERSION: "7.20.0"
@@ -97,7 +104,7 @@ jobs:
       - name: Upload release artifacts
         env:
           VERSION: "7.20.0"
-        uses: AButler/upload-release-assets@v3
+        uses: AButler/upload-release-assets@v3.0
         with:
           release-tag: ${{ env.VERSION }}
           files: "signal-desktop.deb;signal.flatpak;checksums.txt"
