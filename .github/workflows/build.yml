@@ -26,8 +26,8 @@ jobs:
           name: ${{ github.ref }}
           tag: ${{ github.ref }}
   b-build-and-deploy-signal:
-    runs-on: self-hosted
-    #runs-on: ubuntu-latest
+    #runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: '2 build and deploy signal'
     steps:
       - name: Set env.BRANCH
@@ -35,16 +35,10 @@ jobs:
       - name: install secrets
         shell: bash
         env:
-          ID_RSA: ${{secrets.ID_RSA}}
-          SSHCONFIG: ${{secrets.SSHCONFIG}}
           GPG_KEY: ${{secrets.GPG_KEY}}
         run: |
           sudo apt update
           sudo apt install -qq -y gpg openssh-client
-          mkdir -p ~/.ssh
-          echo "$ID_RSA" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          echo "$SSHCONFIG" > ~/.ssh/config
           echo "$GPG_KEY" | gpg --import
       - name: checkout code
         uses: actions/checkout@v4
