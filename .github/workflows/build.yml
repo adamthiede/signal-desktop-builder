@@ -27,6 +27,8 @@ jobs:
           tag: ${{ github.ref }}
 
   b-build-signal-arm64:
+    needs:
+      - a-publish-release
     #runs-on: self-hosted
     runs-on: ubuntu-latest
     name: '2 build signal arm64'
@@ -92,16 +94,17 @@ jobs:
           git add repo
           git commit -m "repo update arm64"
           git push
-      - name: Artifacts
-        uses: actions/upload-artifact@v4
+      - name: Upload release artifacts
+        env:
+          VERSION: "7.20.0"
+        uses: AButler/upload-release-assets@v3.0
         with:
-          name: signal-desktop_arm64
-          path: |
-            signal-desktop_arm64.deb
-            signal_arm64.flatpak
-            checksums_arm64.txt
+          release-tag: ${{ env.VERSION }}
+          files: "signal-desktop_arml64.deb;signal_arm64.flatpak;checksums_arm64.txt"
 
   b-build-signal-amd64:
+    needs:
+      - a-publish-release
     #runs-on: self-hosted
     runs-on: ubuntu-latest
     name: '2 build signal amd64'
@@ -167,33 +170,10 @@ jobs:
           git add repo
           git commit -m "repo update amd64"
           git push
-      - name: Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: signal-desktop_amd64
-          path: |
-            signal-desktop_amd64.deb
-            signal_amd64.flatpak
-            checksums_amd64.txt
-
-  c-deploy-signal:
-    #runs-on: self-hosted
-    runs-on: ubuntu-latest
-    needs:
-      - a-publish-release
-      - b-build-signal-arm64
-      - b-build-signal-amd64
-    name: '3 deploy Signal'
-    steps:
-      - name: Download image artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts/
       - name: Upload release artifacts
         env:
           VERSION: "7.20.0"
         uses: AButler/upload-release-assets@v3.0
         with:
           release-tag: ${{ env.VERSION }}
-          files: "artifacts/signal-desktop_amd64/signal-desktop_amd64.deb;artifacts/signal-desktop_amd64/signal_amd64.flatpak;artifacts/signal-desktop_amd64/checksums_amd64.txt;artifacts/signal-desktop_arm64/signal-desktop_arm64.deb;artifacts/signal-desktop_arm64/signal_arm64.flatpak;artifacts/signal-desktop_arm64/checksums_arm64.txt"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          files: "signal-desktop_amd64.deb;signal_amd64.flatpak;checksums_amd64.txt"
