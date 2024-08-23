@@ -43,4 +43,3 @@ RUN cd /opt/; tar xf node-${NODE_VERSION}-linux-arm64.tar.gz
 RUN mv /opt/node-${NODE_VERSION}-linux-arm64/* /opt/node/
 #ENV PATH=/opt/node/bin:$PATH
 ENV PATH=/Signal-Desktop/node_modules/.bin:/root/.cargo/bin:/opt/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
-RUN npm install --global yarn
