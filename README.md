@@ -1,3 +1,7 @@
+# NOTICE: This repo is going away soon
+
+Moving to [signalflatpak/signal](https://github.com/signalflatpak/signal), available at [signalflatpak.github.io/signal](https://signalflatpak.github.io/signal]. This will be more sustainable and allow many people to contribute!
+
 # Signal Desktop Builder
 This project allows building Signal Desktop for Debian 12 on ARM64.
 It is currently a work in progress, with the goal of building a flatpak
